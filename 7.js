@@ -29,8 +29,8 @@ function SocialBook (users = [], posts = {}) {
     this.addUser = function(user){
         user.id = getId();
         user.isActive = false;
+        this.users.push(user); 
         console.log(`Добавлен пользователь `, user);
-        return this.users.push(user); 
     },
         // - removeUserById(userId) - удаляет пользователя из массива пользователей по полю id
     this.removeUserById = function(id){
@@ -67,12 +67,16 @@ function SocialBook (users = [], posts = {}) {
     },
         // - getAllLikes(userId) - возвращает сумму всех полей likes постов пользователя с id равным userId
     this.getAllLikes= function(userId){
-        let sum = 0
-        this.posts[userId].forEach(post => {
-            sum+=post.likes
-        });
-        return sum
+       return this.posts[userId].reduce((acc, post) => acc + post.likes, 0);
     },
+    // this.getAllLikes= function(userId){
+    //     let sum = 0
+    //     this.posts[userId].forEach(post => {
+    //         sum+=post.likes
+    //     });
+    //     return sum
+    // },
+  
       //   - addPostLike(userId, postId) - увеличивает значение поля likes на 1 у поста с id равным postId, 
       // для пользователя с id равным userId
     this.addPostLike = function(userId, postId){
@@ -81,8 +85,7 @@ function SocialBook (users = [], posts = {}) {
     },
       // - getPostsCount(userId) - возвращает общее количество постов пользователя с id равным userId
     this.getPostsCount = function(userId){
-        const postsCount = this.posts[userId].length
-        return postsCount
+        return this.posts[userId].length
     }
  }
 // Функция создающая уникальный ID 
@@ -126,7 +129,7 @@ let newId = getId()
 const newPost = { id: getId(), text: "Add something new", likes: 1 }
 console.log('Пользователь добавил этот пост:',socialBookUnit.addPost("-s19a6hqce", newPost))
 console.log('Пост удален',socialBookUnit.removePost("-s19a6hqce", "-5sgljaskg"))
-console.log('Сумма постов',socialBookUnit.getAllLikes("-s19a6hqce"));
+console.log('Сумма постов',socialBookUnit.getAllLikes("-qkpzenjxe"));
 console.log( 'лайк', socialBookUnit.addPostLike("-s19a6hqce", "-199hb6igr"));
 console.log( 'лайк', socialBookUnit.addPostLike("-s19a6hqce", "-199hb6igr"));
 console.log('Всего постов', socialBookUnit.getPostsCount("-s19a6hqce"));
